@@ -1,5 +1,5 @@
 import { Either, left, right } from '@/core/either'
-import { Questions } from '../../enterprise/entities/questions'
+import { Question } from '../../enterprise/entities/questions'
 import { QuestionRepository } from '../repositories/question-repository'
 import { ResourceNotFoundError } from '../../../../core/errors/resource-not-found-error'
 
@@ -10,7 +10,7 @@ type RequestType = {
 type GetQuestionBySlugResponse = Either<
   ResourceNotFoundError,
   {
-    question: Questions
+    question: Question
   }
 >
 

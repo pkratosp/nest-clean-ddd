@@ -2,10 +2,10 @@ import { DomainEvents } from '@/core/events/domain-events'
 import { PaginationParams } from '@/core/repositories/pagination-params'
 import { QuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
 import { QuestionRepository } from '@/domain/forum/application/repositories/question-repository'
-import { Questions } from '@/domain/forum/enterprise/entities/questions'
+import { Question } from '@/domain/forum/enterprise/entities/questions'
 
 export class InMemoryQuestionsRepository implements QuestionRepository {
-  public items: Questions[] = []
+  public items: Question[] = []
 
   constructor(
     private questionAttachmentsRepository: QuestionAttachmentsRepository,
@@ -31,13 +31,13 @@ export class InMemoryQuestionsRepository implements QuestionRepository {
     return question
   }
 
-  async create(question: Questions) {
+  async create(question: Question) {
     this.items.push(question)
 
     DomainEvents.dispatchEventsForAggregate(question.id)
   }
 
-  async save(question: Questions) {
+  async save(question: Question) {
     const findIndex = this.items.findIndex((item) => item.id === question.id)
 
     this.items[findIndex] = question
@@ -45,7 +45,7 @@ export class InMemoryQuestionsRepository implements QuestionRepository {
     DomainEvents.dispatchEventsForAggregate(question.id)
   }
 
-  async delete(question: Questions) {
+  async delete(question: Question) {
     const findIndex = this.items.findIndex((item) => item.id === question.id)
 
     this.items.splice(findIndex, 1)

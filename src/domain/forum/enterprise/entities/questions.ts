@@ -13,11 +13,11 @@ export interface QuestionsProps {
   slug: Slug
   attachments: QuestionAttachmentList
   createdAt: Date
-  updatedAt?: Date
+  updatedAt?: Date | null
   bestAnswerId?: UniqueEntityID
 }
 
-export class Questions extends AggregateRoot<QuestionsProps> {
+export class Question extends AggregateRoot<QuestionsProps> {
   get authorId() {
     return this.props.authorId
   }
@@ -98,7 +98,7 @@ export class Questions extends AggregateRoot<QuestionsProps> {
     props: Optional<QuestionsProps, 'createdAt' | 'slug' | 'attachments'>,
     id?: UniqueEntityID,
   ) {
-    const questions = new Questions(
+    const questions = new Question(
       {
         ...props,
         slug: props.slug ?? Slug.createFromText(props.title),

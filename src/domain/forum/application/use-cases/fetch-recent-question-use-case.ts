@@ -1,5 +1,5 @@
 import { Either, right } from '@/core/either'
-import { Questions } from '../../enterprise/entities/questions'
+import { Question } from '../../enterprise/entities/questions'
 import { QuestionRepository } from '../repositories/question-repository'
 
 type RequestType = {
@@ -9,7 +9,7 @@ type RequestType = {
 type FetchRecentQuestionUseCaseResponse = Either<
   null,
   {
-    questions: Questions[]
+    questions: Question[]
   }
 >
 
