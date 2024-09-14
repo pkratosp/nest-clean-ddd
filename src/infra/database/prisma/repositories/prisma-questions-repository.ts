@@ -10,7 +10,7 @@ export class PrismaQuestionsRepository implements QuestionRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findbyId(id: string): Promise<Question | null> {
-    const question = await this.prismaService.questions.findUnique({
+    const question = await this.prismaService.question.findUnique({
       where: {
         id,
       },
@@ -23,23 +23,56 @@ export class PrismaQuestionsRepository implements QuestionRepository {
     return PrismaQuestionMapper.toDomain(question)
   }
 
-  findBySlug(slug: string): Promise<Question | null> {
-    throw new Error('Method not implemented.')
+  async findBySlug(slug: string): Promise<Question | null> {
+    const question = await this.prismaService.question.findUnique({
+      where: {
+        slug,
+      },
+    })
+
+    if (!question) {
+      return null
+    }
+
+    return PrismaQuestionMapper.toDomain(question)
   }
 
-  create(question: Question): Promise<void> {
-    throw new Error('Method not implemented.')
+  async create(question: Question): Promise<void> {
+    const data = PrismaQuestionMapper.toPrisma(question)
+
+    await this.prismaService.question.create({
+      data,
+    })
   }
 
-  save(question: Question): Promise<void> {
-    throw new Error('Method not implemented.')
+  async save(question: Question): Promise<void> {
+    const data = PrismaQuestionMapper.toPrisma(question)
+
+    await this.prismaService.question.update({
+      where: {
+        id: question.id.toString(),
+      },
+      data,
+    })
   }
 
-  delete(question: Question): Promise<void> {
-    throw new Error('Method not implemented.')
+  async delete(question: Question): Promise<void> {
+    await this.prismaService.question.delete({
+      where: {
+        id: question.id.toString(),
+      },
+    })
   }
 
-  findManyRecent(params: PaginationParams): Promise<Question[]> {
-    throw new Error('Method not implemented.')
+  async findManyRecent({ page }: PaginationParams): Promise<Question[]> {
+    const questions = await this.prismaService.question.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return questions.map(PrismaQuestionMapper.toDomain)
   }
 }
