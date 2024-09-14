@@ -6,7 +6,7 @@ import { vi } from 'vitest'
 
 class CustomAggregateCreate implements DomainEvent {
   public ocurrentAt: Date
-    private aggregate: CustomAggregate // eslint-disable-line
+  private aggregate: CustomAggregate; // eslint-disable-line
 
   constructor(aggregate: CustomAggregate) {
     this.aggregate = aggregate

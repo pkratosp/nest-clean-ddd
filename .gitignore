@@ -61,3 +61,6 @@ public_key.pem
 
 chave_privada_base64.txt
 chave_publica_base64.txt
+
+private_key-base64.txt
+public_key-base64.txt

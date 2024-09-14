@@ -5,7 +5,6 @@ import { envSchema } from './env'
 import { AuthModule } from './auth/auth.module'
 import { HttpModule } from './http/http.module'
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -13,7 +12,7 @@ import { HttpModule } from './http/http.module'
       isGlobal: true,
     }),
     AuthModule,
-    HttpModule
-  ]
+    HttpModule,
+  ],
 })
 export class AppModule {}
