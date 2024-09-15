@@ -7,6 +7,7 @@ import { PrimaNotificationRepository } from './repositories/prisma-notification-
 import { PrismaQuestionsAttachmentsRepository } from './repositories/prisma-questions-attachments-repository'
 import { PrismaQuestionsCommentRepository } from './repositories/prisma-questions-comment-repository'
 import { PrismaQuestionsRepository } from './repositories/prisma-questions-repository'
+import { QuestionRepository } from '@/domain/forum/application/repositories/question-repository'
 
 @Module({
   providers: [
@@ -17,7 +18,10 @@ import { PrismaQuestionsRepository } from './repositories/prisma-questions-repos
     PrimaNotificationRepository,
     PrismaQuestionsAttachmentsRepository,
     PrismaQuestionsCommentRepository,
-    PrismaQuestionsRepository,
+    {
+      provide: QuestionRepository,
+      useClass: PrismaQuestionsRepository,
+    },
   ],
   exports: [
     PrismaService,
@@ -27,7 +31,7 @@ import { PrismaQuestionsRepository } from './repositories/prisma-questions-repos
     PrimaNotificationRepository,
     PrismaQuestionsAttachmentsRepository,
     PrismaQuestionsCommentRepository,
-    PrismaQuestionsRepository,
+    QuestionRepository,
   ],
 })
 export class DatabaseModule {}
