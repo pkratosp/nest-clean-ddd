@@ -3,11 +3,25 @@ import { UniqueEntityID } from '@/core/entities/unique-entity'
 
 interface StudantsProps {
   name: string
+  email: string
+  password: string
 }
 
-export class Studants extends Entity<StudantsProps> {
+export class Studant extends Entity<StudantsProps> {
+  get name() {
+    return this.props.name
+  }
+
+  get email() {
+    return this.props.email
+  }
+
+  get password() {
+    return this.props.password
+  }
+
   static create(props: StudantsProps, id?: UniqueEntityID) {
-    const studant = new Studants(props, id)
+    const studant = new Studant(props, id)
 
     return studant
   }
