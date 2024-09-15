@@ -4,6 +4,7 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { PrismaService } from '@/infra/database/prisma/prisma-service'
 import { z } from 'zod'
 import { FetchRecentQuestionUseCase } from '@/domain/forum/application/use-cases/fetch-recent-question-use-case'
+import { QuestionPresenter } from '../presenter/question-presenter'
 
 const pageQueryParamSchema = z
   .string()
@@ -25,8 +26,14 @@ export class FetchRecentQuestionController {
 
   @Get()
   async handle(@Query('page', queryValidationPipe) page: PageQueryParamSchema) {
-    const questions = await this.fetchRecentQuestionUseCase.execute({ page })
+    const result = await this.fetchRecentQuestionUseCase.execute({ page })
 
-    return { questions }
+    if (result.isLeft()) {
+      throw new Error()
+    }
+
+    const questions = result.value.questions
+
+    return { questions: questions.map(QuestionPresenter.toHttp) }
   }
 }
