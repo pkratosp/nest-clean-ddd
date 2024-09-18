@@ -4,19 +4,19 @@ import { StudantsRepository } from '../repositories/studants-repository'
 import { Encrypter } from '../repositories/cryptography/encrypter'
 import { HashCompare } from '../repositories/cryptography/hash-compare'
 
-export interface AuthenticateStudantRequest {
+export interface AuthenticateStudantUseCaseRequest {
   email: string
   password: string
 }
 
-type AuthenticateStudantResponse = Either<
+type AuthenticateStudantUseCaseResponse = Either<
   WrongCredentialsError,
   {
     accessToken: string
   }
 >
 
-export class AuthenticateStudant {
+export class AuthenticateStudantUseCase {
   constructor(
     private readonly studantsRepository: StudantsRepository,
     private readonly encrypter: Encrypter,
@@ -26,7 +26,7 @@ export class AuthenticateStudant {
   async execute({
     email,
     password,
-  }: AuthenticateStudantRequest): Promise<AuthenticateStudantResponse> {
+  }: AuthenticateStudantUseCaseRequest): Promise<AuthenticateStudantUseCaseResponse> {
     const studant = await this.studantsRepository.findByEmail(email)
 
     if (!studant) {
