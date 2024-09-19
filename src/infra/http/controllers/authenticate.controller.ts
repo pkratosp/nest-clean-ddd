@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpCode,
@@ -6,11 +7,10 @@ import {
   UnauthorizedException,
   UsePipes,
 } from '@nestjs/common'
-import { JwtService } from '@nestjs/jwt'
-import { compare } from 'bcryptjs'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { PrismaService } from '@/infra/database/prisma/prisma-service'
 import { z } from 'zod'
+import { AuthenticateStudantUseCase } from '@/domain/forum/application/use-cases/authenticate-studant-use-case'
+import { WrongCredentialsError } from '@/domain/forum/application/use-cases/errors/wrong-credentials-error'
 
 const authenticateBodySchema = z.object({
   email: z.string().email(),
@@ -22,8 +22,7 @@ type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>
 @Controller('/session')
 export class AuthenticateController {
   constructor(
-    private readonly jwt: JwtService,
-    private readonly prismaService: PrismaService,
+    private readonly authenticateStudantUseCase: AuthenticateStudantUseCase,
   ) {}
 
   @Post()
@@ -32,26 +31,24 @@ export class AuthenticateController {
   async handle(@Body() body: AuthenticateBodySchema) {
     const { email, password } = body
 
-    const user = await this.prismaService.user.findUnique({
-      where: {
-        email,
-      },
+    const result = await this.authenticateStudantUseCase.execute({
+      email,
+      password,
     })
 
-    if (!user) {
-      throw new UnauthorizedException('Credenciais invalidas')
+    if (result.isLeft()) {
+      const error = result.value
+
+      switch (error.constructor) {
+        case WrongCredentialsError:
+          throw new UnauthorizedException(error.message)
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
-
-    const isPasswordValid = await compare(password, user.password)
-
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Credenciais invalidas')
-    }
-
-    const token = this.jwt.sign({ sub: user.id })
 
     return {
-      access_token: token,
+      access_token: result.value.accessToken,
     }
   }
 }
