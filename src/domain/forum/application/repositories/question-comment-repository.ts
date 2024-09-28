@@ -1,7 +1,7 @@
 import { QuestionComment } from '../../enterprise/entities/question-comment'
 
-export interface QuestionCommentRepository {
-  findById(id: string): Promise<QuestionComment | null>
-  create(data: QuestionComment): Promise<void>
-  delete(data: QuestionComment): Promise<void>
+export abstract class QuestionCommentRepository {
+  abstract findById(id: string): Promise<QuestionComment | null>
+  abstract create(data: QuestionComment): Promise<void>
+  abstract delete(data: QuestionComment): Promise<void>
 }

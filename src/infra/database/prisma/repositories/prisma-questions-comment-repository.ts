@@ -1,20 +1,43 @@
 import { Injectable } from '@nestjs/common'
 import { QuestionCommentRepository } from '../../../../domain/forum/application/repositories/question-comment-repository'
 import { QuestionComment } from '../../../../domain/forum/enterprise/entities/question-comment'
+import { PrismaService } from '../prisma-service'
+import { PrismaQuestionCommentMapper } from '../mappers/prisma-question-comment-mapper'
 
 @Injectable()
 export class PrismaQuestionsCommentRepository
   implements QuestionCommentRepository
 {
-  findById(id: string): Promise<QuestionComment | null> {
-    throw new Error('Method not implemented.')
+  constructor(private readonly prismaService: PrismaService) {}
+
+  async findById(id: string): Promise<QuestionComment | null> {
+    const find = await this.prismaService.comment.findUnique({
+      where: {
+        id: id
+      }
+    })
+
+    if(!find) {
+      return null
+    }
+
+    return PrismaQuestionCommentMapper.toDomain(find)
   }
 
-  create(data: QuestionComment): Promise<void> {
-    throw new Error('Method not implemented.')
+  async create(data: QuestionComment): Promise<void> {
+    const _data = PrismaQuestionCommentMapper.toPrisma(data)
+
+    await this.prismaService.comment.create({
+      data: _data
+    })
   }
 
-  delete(data: QuestionComment): Promise<void> {
-    throw new Error('Method not implemented.')
+  async delete(data: QuestionComment): Promise<void> {
+
+    await this.prismaService.comment.delete({
+      where: {
+        id: data.id.toString()
+      }
+    })
   }
 }
