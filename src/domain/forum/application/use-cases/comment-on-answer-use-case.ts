@@ -3,10 +3,11 @@ import { AnswerComment } from '../../enterprise/entities/answer-comment'
 import { AnswerCommentRepository } from '../repositories/answer-comment-repository'
 import { AnswerRepository } from '../repositories/answer-repository'
 import { ResourceNotFoundError } from '../../../../core/errors/resource-not-found-error'
+import { UniqueEntityID } from '@/core/entities/unique-entity'
 
 type RequestType = {
-  authorId: string
-  answerId: string
+  authorId: UniqueEntityID
+  answerId: UniqueEntityID
   content: string
 }
 
@@ -28,7 +29,7 @@ export class CommentOnAnswerUseCase {
     content,
     answerId,
   }: RequestType): Promise<CommentOnAnswerUseCaseResponse> {
-    const answer = await this.answerRepository.findbyId(answerId)
+    const answer = await this.answerRepository.findbyId(answerId.toString())
 
     if (!answer) {
       return left(new ResourceNotFoundError())
