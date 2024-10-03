@@ -1,7 +1,7 @@
 import { DeleteAnswerUseCase } from "@/domain/forum/application/use-cases/delete-answer-use-case";
 import { CurrentUser } from "@/infra/auth/current-user-decorator";
 import { UserPayload } from "@/infra/auth/jwt.strategy";
-import { BadRequestException, Controller, Delete, Param } from "@nestjs/common";
+import { BadRequestException, Controller, Delete, HttpCode, Param } from "@nestjs/common";
 
 
 @Controller('/answers/:id')
@@ -11,6 +11,7 @@ export class DeleteAnswerController {
     ) {}
 
     @Delete()
+    @HttpCode(204)
     async execute(
         @Param('id') id: string,
         @CurrentUser() user: UserPayload
