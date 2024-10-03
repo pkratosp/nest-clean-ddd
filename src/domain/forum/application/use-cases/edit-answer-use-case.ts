@@ -7,6 +7,8 @@ import { AnswerAttachmentList } from '../../enterprise/entities/answer-attachmen
 import { AnswerAttachment } from '../../enterprise/entities/answer-attachment'
 import { UniqueEntityID } from '@/core/entities/unique-entity'
 import { Answer } from '../../enterprise/entities/answer'
+import { Injectable } from '@nestjs/common'
+
 
 type RequestType = {
   content: string
@@ -21,7 +23,7 @@ type EditAnswerUseCaseResponse = Either<
     answer: Answer
   }
 >
-
+@Injectable()
 export class EditAnswerUseCase {
   constructor(
     private readonly answerRepository: AnswerRepository,
@@ -62,6 +64,8 @@ export class EditAnswerUseCase {
 
     answer.content = content
     answer.attachments = answerAttachmentList
+
+    await this.answerRepository.save(answer)
 
     return right({
       answer,
