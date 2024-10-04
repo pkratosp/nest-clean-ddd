@@ -1,19 +1,19 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
-import { CurrentUser } from '@/infra/auth/current-user-decorator'
-import { UserPayload } from '@/infra/auth/jwt.strategy'
-import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
-import { z } from 'zod'
-import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question-use-case'
+import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
+import { CurrentUser } from "@/infra/auth/current-user-decorator";
+import { UserPayload } from "@/infra/auth/jwt.strategy";
+import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
+import { z } from "zod";
+import { CreateQuestionUseCase } from "@/domain/forum/application/use-cases/create-question-use-case";
 
 const createQuestionBodySchema = z.object({
   title: z.string(),
   content: z.string(),
-})
-const bodyValidationPipe = new ZodValidationPipe(createQuestionBodySchema)
+});
+const bodyValidationPipe = new ZodValidationPipe(createQuestionBodySchema);
 
-type CreateQuestionBodySchema = z.infer<typeof createQuestionBodySchema>
+type CreateQuestionBodySchema = z.infer<typeof createQuestionBodySchema>;
 
-@Controller('/questions')
+@Controller("/questions")
 export class CreateQuestionController {
   constructor(private readonly createQuestionUseCase: CreateQuestionUseCase) {}
 
@@ -22,17 +22,17 @@ export class CreateQuestionController {
     @Body(bodyValidationPipe) body: CreateQuestionBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const { content, title } = body
+    const { content, title } = body;
 
     const result = await this.createQuestionUseCase.execute({
       authorId: user.sub,
       content,
       title,
       attachmentsIds: [],
-    })
+    });
 
     if (result.isLeft()) {
-      throw new BadRequestException()
+      throw new BadRequestException();
     }
   }
 }

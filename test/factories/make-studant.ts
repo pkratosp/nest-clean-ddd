@@ -1,12 +1,12 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
+import { UniqueEntityID } from "@/core/entities/unique-entity";
 import {
   Studant,
   StudantsProps,
-} from '@/domain/forum/enterprise/entities/studants'
-import { PrismaStudantsMapper } from '@/infra/database/prisma/mappers/prisma-studants-mapper'
-import { PrismaService } from '@/infra/database/prisma/prisma-service'
-import { faker } from '@faker-js/faker'
-import { Injectable } from '@nestjs/common'
+} from "@/domain/forum/enterprise/entities/studants";
+import { PrismaStudantsMapper } from "@/infra/database/prisma/mappers/prisma-studants-mapper";
+import { PrismaService } from "@/infra/database/prisma/prisma-service";
+import { faker } from "@faker-js/faker";
+import { Injectable } from "@nestjs/common";
 
 export function makeStudant(
   override: Partial<StudantsProps> = {},
@@ -20,24 +20,22 @@ export function makeStudant(
       ...override,
     },
     id,
-  )
+  );
 
-  return createStudant
+  return createStudant;
 }
 
 @Injectable()
 export class StudantFactory {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async makePrismaStudant(
-    data: Partial<StudantsProps> = {}
-  ) {
-    const studant = makeStudant(data)
+  async makePrismaStudant(data: Partial<StudantsProps> = {}) {
+    const studant = makeStudant(data);
 
     await this.prismaService.user.create({
-      data: PrismaStudantsMapper.toPrisma(studant)
-    })
+      data: PrismaStudantsMapper.toPrisma(studant),
+    });
 
-    return studant
+    return studant;
   }
 }

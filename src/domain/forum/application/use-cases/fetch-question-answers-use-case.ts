@@ -1,19 +1,19 @@
-import { Either, right } from '@/core/either'
-import { Answer } from '../../enterprise/entities/answer'
-import { AnswerRepository } from '../repositories/answer-repository'
-import { Injectable } from '@nestjs/common'
+import { Either, right } from "@/core/either";
+import { Answer } from "../../enterprise/entities/answer";
+import { AnswerRepository } from "../repositories/answer-repository";
+import { Injectable } from "@nestjs/common";
 
 type RequestType = {
-  questionId: string
-  page: number
-}
+  questionId: string;
+  page: number;
+};
 
 type FetchQuestionAnswersUseCaseResponse = Either<
   null,
   {
-    answers: Answer[]
+    answers: Answer[];
   }
->
+>;
 
 @Injectable()
 export class FetchQuestionAnswersUseCase {
@@ -28,10 +28,10 @@ export class FetchQuestionAnswersUseCase {
       {
         page,
       },
-    )
+    );
 
     return right({
       answers: findAnswers,
-    })
+    });
   }
 }

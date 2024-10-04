@@ -1,24 +1,24 @@
-import { UniqueEntityID } from '@/core/entities/unique-entity'
-import { Question } from '../../enterprise/entities/questions'
-import { QuestionRepository } from '../repositories/question-repository'
-import { QuestionAttachment } from '../../enterprise/entities/question-attachment'
-import { Either, right } from '@/core/either'
-import { QuestionAttachmentList } from '../../enterprise/entities/question-attachment-list'
-import { Injectable } from '@nestjs/common'
+import { UniqueEntityID } from "@/core/entities/unique-entity";
+import { Question } from "../../enterprise/entities/questions";
+import { QuestionRepository } from "../repositories/question-repository";
+import { QuestionAttachment } from "../../enterprise/entities/question-attachment";
+import { Either, right } from "@/core/either";
+import { QuestionAttachmentList } from "../../enterprise/entities/question-attachment-list";
+import { Injectable } from "@nestjs/common";
 
 type RequestType = {
-  authorId: string
-  title: string
-  content: string
-  attachmentsIds: string[]
-}
+  authorId: string;
+  title: string;
+  content: string;
+  attachmentsIds: string[];
+};
 
 type CreateQuestionUseCaseResponse = Either<
   null,
   {
-    question: Question
+    question: Question;
   }
->
+>;
 
 @Injectable()
 export class CreateQuestionUseCase {
@@ -34,20 +34,20 @@ export class CreateQuestionUseCase {
       authorId: new UniqueEntityID(authorId),
       content,
       title,
-    })
+    });
 
     const questionAttachment = attachmentsIds.map((attachmentid) => {
       return QuestionAttachment.create({
         attachmentId: new UniqueEntityID(attachmentid),
         questionId: question.id,
-      })
-    })
+      });
+    });
 
-    question.attachments = new QuestionAttachmentList(questionAttachment)
-    await this.questionRepository.create(question)
+    question.attachments = new QuestionAttachmentList(questionAttachment);
+    await this.questionRepository.create(question);
 
     return right({
       question,
-    })
+    });
   }
 }

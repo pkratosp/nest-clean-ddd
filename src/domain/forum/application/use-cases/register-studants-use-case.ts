@@ -1,22 +1,22 @@
-import { Either, left, right } from '@/core/either'
-import { HashGenerator } from '../repositories/cryptography/hash-generator'
-import { StudantsRepository } from '../repositories/studants-repository'
-import { StudantAlreadyExistsError } from './errors/student-already-exists-error'
-import { Studant } from '../../enterprise/entities/studants'
-import { Injectable } from '@nestjs/common'
+import { Either, left, right } from "@/core/either";
+import { HashGenerator } from "../repositories/cryptography/hash-generator";
+import { StudantsRepository } from "../repositories/studants-repository";
+import { StudantAlreadyExistsError } from "./errors/student-already-exists-error";
+import { Studant } from "../../enterprise/entities/studants";
+import { Injectable } from "@nestjs/common";
 
 export interface RegisterStudantsUseCaseRequest {
-  name: string
-  email: string
-  password: string
+  name: string;
+  email: string;
+  password: string;
 }
 
 type RegisterStudantsUseCaseResponse = Either<
   StudantAlreadyExistsError,
   {
-    studant: Studant
+    studant: Studant;
   }
->
+>;
 
 @Injectable()
 export class RegisterStudantsUseCase {
@@ -31,24 +31,24 @@ export class RegisterStudantsUseCase {
     password,
   }: RegisterStudantsUseCaseRequest): Promise<RegisterStudantsUseCaseResponse> {
     const studantWithSameEmail =
-      await this.studantsRepository.findByEmail(email)
+      await this.studantsRepository.findByEmail(email);
 
     if (studantWithSameEmail) {
-      return left(new StudantAlreadyExistsError(email))
+      return left(new StudantAlreadyExistsError(email));
     }
 
-    const hashPassword = await this.hashGenerator.generate(password)
+    const hashPassword = await this.hashGenerator.generate(password);
 
     const studant = Studant.create({
       email,
       name,
       password: hashPassword,
-    })
+    });
 
-    await this.studantsRepository.create(studant)
+    await this.studantsRepository.create(studant);
 
     return right({
       studant,
-    })
+    });
   }
 }

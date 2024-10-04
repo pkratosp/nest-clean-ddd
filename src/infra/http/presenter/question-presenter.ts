@@ -1,4 +1,4 @@
-import { Question } from '@/domain/forum/enterprise/entities/questions'
+import { Question } from "@/domain/forum/enterprise/entities/questions";
 
 export class QuestionPresenter {
   static toHttp(question: Question) {
@@ -9,6 +9,6 @@ export class QuestionPresenter {
       bestAnswer: question.bestAnswerId?.toString,
       createdAt: question.createdAt,
       updatedAt: question.updatedAt,
-    }
+    };
   }
 }

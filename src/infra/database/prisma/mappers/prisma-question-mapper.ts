@@ -1,7 +1,7 @@
-import { Slug } from '@/domain/forum/enterprise/entities/value-objects/slug'
-import { Question } from '@/domain/forum/enterprise/entities/questions'
-import { Prisma, Question as PrismaQuestion } from '@prisma/client'
-import { UniqueEntityID } from '@/core/entities/unique-entity'
+import { Slug } from "@/domain/forum/enterprise/entities/value-objects/slug";
+import { Question } from "@/domain/forum/enterprise/entities/questions";
+import { Prisma, Question as PrismaQuestion } from "@prisma/client";
+import { UniqueEntityID } from "@/core/entities/unique-entity";
 
 export class PrismaQuestionMapper {
   static toDomain(raw: PrismaQuestion): Question {
@@ -18,7 +18,7 @@ export class PrismaQuestionMapper {
         updatedAt: raw.updatedAt,
       },
       new UniqueEntityID(raw.id),
-    )
+    );
   }
 
   static toPrisma(question: Question): Prisma.QuestionUncheckedCreateInput {
@@ -31,6 +31,6 @@ export class PrismaQuestionMapper {
       createdAt: question.createdAt,
       updatedAt: question.updatedAt,
       bestAnswerId: question.bestAnswerId?.toString(),
-    }
+    };
   }
 }

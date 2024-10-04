@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common'
-import { PaginationParams } from '../../../../core/repositories/pagination-params'
-import { AnswerRepository } from '../../../../domain/forum/application/repositories/answer-repository'
-import { Answer } from '../../../../domain/forum/enterprise/entities/answer'
-import { PrismaService } from '../prisma-service'
-import { PrismaAnswerMapper } from '../mappers/prisma-answer-mapper'
+import { Injectable } from "@nestjs/common";
+import { PaginationParams } from "../../../../core/repositories/pagination-params";
+import { AnswerRepository } from "../../../../domain/forum/application/repositories/answer-repository";
+import { Answer } from "../../../../domain/forum/enterprise/entities/answer";
+import { PrismaService } from "../prisma-service";
+import { PrismaAnswerMapper } from "../mappers/prisma-answer-mapper";
 
 @Injectable()
 export class PrismaAnswersRepository implements AnswerRepository {
@@ -12,40 +12,40 @@ export class PrismaAnswersRepository implements AnswerRepository {
   async findbyId(id: string): Promise<Answer | null> {
     const answer = await this.prismaService.answer.findUnique({
       where: {
-        id
-      }
-    })
+        id,
+      },
+    });
 
-    if(!answer) {
-      return null
+    if (!answer) {
+      return null;
     }
 
-    return PrismaAnswerMapper.toDomain(answer)
+    return PrismaAnswerMapper.toDomain(answer);
   }
 
   async create(data: Answer): Promise<void> {
-    const _data = PrismaAnswerMapper.toPrisma(data)
+    const _data = PrismaAnswerMapper.toPrisma(data);
     await this.prismaService.answer.create({
-      data: _data
-    })
+      data: _data,
+    });
   }
 
   async save(answer: Answer): Promise<void> {
-    const data = PrismaAnswerMapper.toPrisma(answer)
+    const data = PrismaAnswerMapper.toPrisma(answer);
     await this.prismaService.answer.update({
       data,
       where: {
-        id: data.id
-      }
-    })
+        id: data.id,
+      },
+    });
   }
 
   async delete(answer: Answer): Promise<void> {
     await this.prismaService.answer.delete({
       where: {
-        id: answer.id.toString()
-      }
-    })
+        id: answer.id.toString(),
+      },
+    });
   }
 
   async findManyByQuestionId(
@@ -54,12 +54,12 @@ export class PrismaAnswersRepository implements AnswerRepository {
   ): Promise<Answer[]> {
     const answers = await this.prismaService.answer.findMany({
       where: {
-        questionId
+        questionId,
       },
       take: 20,
-      skip: (page - 1) * 20
-    })
+      skip: (page - 1) * 20,
+    });
 
-    return answers.map((answer) => PrismaAnswerMapper.toDomain(answer))
+    return answers.map((answer) => PrismaAnswerMapper.toDomain(answer));
   }
 }
