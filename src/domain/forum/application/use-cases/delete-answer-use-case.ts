@@ -21,7 +21,6 @@ export class DeleteAnswerUseCase {
   async execute(data: RequestType): Promise<DeleteAnswerUseCaseResponse> {
     const findAnswer = await this.answerRepository.findbyId(data.answerId)
 
-    console.log(findAnswer)
     if (!findAnswer) {
       return left(new ResourceNotFoundError())
     }
