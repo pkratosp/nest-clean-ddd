@@ -4,10 +4,11 @@ import { AnswerCommentRepository } from "../repositories/answer-comment-reposito
 import { AnswerRepository } from "../repositories/answer-repository";
 import { ResourceNotFoundError } from "../../../../core/errors/resource-not-found-error";
 import { UniqueEntityID } from "@/core/entities/unique-entity";
+import { Injectable } from "@nestjs/common";
 
 type RequestType = {
-  authorId: UniqueEntityID;
-  answerId: UniqueEntityID;
+  authorId: string;
+  answerId: string;
   content: string;
 };
 
@@ -18,6 +19,7 @@ type CommentOnAnswerUseCaseResponse = Either<
   }
 >;
 
+@Injectable()
 export class CommentOnAnswerUseCase {
   constructor(
     private answerCommentRepository: AnswerCommentRepository,
@@ -36,9 +38,9 @@ export class CommentOnAnswerUseCase {
     }
 
     const answerComment = AnswerComment.create({
-      authorId,
+      authorId: new UniqueEntityID(authorId),
       content,
-      answerId,
+      answerId: new UniqueEntityID(answerId),
     });
 
     await this.answerCommentRepository.create(answerComment);
