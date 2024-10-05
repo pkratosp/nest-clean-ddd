@@ -34,6 +34,10 @@ import { DeleteQuestionCommentController } from "./controllers/delete-question-c
 import { DeleteQuestionCommentUseCase } from "@/domain/forum/application/use-cases/delete-question-comment-use-case";
 import { DeleteQuestionController } from "./controllers/delete-question.controller";
 import { DeleteQuestionUseCase } from "@/domain/forum/application/use-cases/delete-question-use-case";
+import { FetchQuestionCommentsController } from "./controllers/fetch-question-comments.controller";
+import { FetchQuestionCommentUseCase } from "@/domain/forum/application/use-cases/fetch-question-comment-use-case";
+import { FetchAnswerCommensController } from "./controllers/fetch-answer-comments.controller";
+import { FetchAnswerCommentUseCase } from "@/domain/forum/application/use-cases/fetch-answer-comment-use-case";
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -54,6 +58,8 @@ import { DeleteQuestionUseCase } from "@/domain/forum/application/use-cases/dele
     DeleteAnswerCommentController,
     DeleteQuestionCommentController,
     DeleteQuestionController,
+    FetchQuestionCommentsController,
+    FetchAnswerCommensController
   ],
   providers: [
     CreateQuestionUseCase,
@@ -71,7 +77,9 @@ import { DeleteQuestionUseCase } from "@/domain/forum/application/use-cases/dele
     CommentOnAnswerUseCase,
     DeleteAnswerCommentUseCase,
     DeleteQuestionCommentUseCase,
-    DeleteQuestionUseCase
+    DeleteQuestionUseCase,
+    FetchQuestionCommentUseCase,
+    FetchAnswerCommentUseCase
   ],
 })
 export class HttpModule {}
