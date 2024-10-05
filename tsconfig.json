@@ -13,7 +13,8 @@
       "@/*": ["./src/*"]
     },
     "types": [
-      "vitest/globals"
+      "vitest/globals",
+      "@types/multer"
     ],
     "incremental": true,
     "skipLibCheck": true,
