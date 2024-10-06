@@ -1,9 +1,16 @@
-import { Controller, FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Uploader } from "@/domain/forum/application/storage/uploader";
+import { InvalidAttachmentTypeError } from "@/domain/forum/application/use-cases/errors/invalid-attachment-type-error";
+import { UploadAndCreateAttachmentUseCase } from "@/domain/forum/application/use-cases/upload-and-create-attachment-use-case";
+import { BadRequestException, Controller, FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 
 @Controller('/attachments')
 export class UploadAttachmentController {
     
+    constructor(
+        private readonly uploadAndCreateAttachmentUseCase: UploadAndCreateAttachmentUseCase,
+    ) {}
+
     @Post()
     @UseInterceptors(FileInterceptor('file'))
     async execute(
@@ -20,6 +27,27 @@ export class UploadAttachmentController {
             })
         ) file: Express.Multer.File
     ) {
-        console.log(file)
+        const result = await this.uploadAndCreateAttachmentUseCase.execute({
+            body: file.buffer,
+            fileName: file.originalname,
+            fileType: file.mimetype
+        })
+
+
+        if(result.isLeft()) {
+            const error = result.value
+            switch (error.constructor) {
+                case InvalidAttachmentTypeError:
+                throw new BadRequestException(error.message)
+                default:
+                throw new BadRequestException(error.message)
+            }
+        }
+
+        const { attachments } = result.value
+    
+        return {
+            attachmentId: attachments.id.toString()
+        }
     }
 }
