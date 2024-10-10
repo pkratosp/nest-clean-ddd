@@ -52,9 +52,9 @@ export class EditQuestionUseCase {
       currentQuestionAttachments,
     );
 
-    const questionAttachments = attachmentsIds.map((attachementId) => {
+    const questionAttachments = attachmentsIds.map((attachmentId) => {
       return QuestionAttachment.create({
-        attachmentId: new UniqueEntityID(attachementId),
+        attachmentId: new UniqueEntityID(attachmentId),
         questionId: findQuestion.id,
       });
     });
