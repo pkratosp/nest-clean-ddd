@@ -37,6 +37,12 @@ npm run start:dev
 
 ## Para criar chaves publicas e privadas
 
+Observação, caso esteja no windows é necessário instalar a lib openssl pelo chocolatey, caso não tenha instalado rode o comando abaixo para instalar a lib
+
+```sh
+choco install openssl
+```
+
 gera a chave privada
 ```sh
 openssl genpkey -algorithm RSA -out private_key.pem -pkeyopt rsa_keygen_bits:2048
@@ -50,6 +56,12 @@ openssl rsa -pubout -in private_key.pem -out public_key.pem
 
 ## Para gerar um base64 das chaves publicas e privadas
 
+Observação, caso esteja no windows é necessário instalar a lib base64 pelo chocolatey, caso não tenha instalado rode o comando abaixo
+
+```sh
+choco install base64
+```
+
 ```sh
 base64 -i private_key.pem -o private_key-base64.txt
 ```
@@ -58,6 +70,9 @@ base64 -i private_key.pem -o private_key-base64.txt
 base64 -i public_key.pem -o public_key-base64.txt
 ```
 
+
+## Diagrama de Entidade Relacionamento do projeto
+![ERD prisma](prisma-erd.svg)
 
 ## Outros comandos
 
