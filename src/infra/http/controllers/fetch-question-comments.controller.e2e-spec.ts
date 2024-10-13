@@ -32,7 +32,7 @@ describe("Fetch recent question comments (E2E)", () => {
   });
 
   test("[GET] /questions/commnets/:questionId", async () => {
-    const user = await studantFactory.makePrismaStudant();
+    const user = await studantFactory.makePrismaStudant({ name: 'Jhon doe' });
 
     const token = jwt.sign({ sub: user.id.toString() });
 
@@ -58,5 +58,15 @@ describe("Fetch recent question comments (E2E)", () => {
 
     expect(response.statusCode).toEqual(200);
     expect(response.body.comments).toHaveLength(2);
+    expect(response.body.comments).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          authorName: 'Jhon doe'
+        }),
+        expect.objectContaining({
+          authorName: 'Jhon doe'
+        })
+      ])
+    );
   });
 });
