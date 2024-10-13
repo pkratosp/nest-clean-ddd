@@ -3,6 +3,7 @@ import { BadRequestException, Controller, Get, HttpCode, Param, Query } from "@n
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
 import { CommentsPresenter } from "../presenter/comments-presenter";
+import { CommentsWithAuthorPresenter } from "../presenter/comments-with-author-presenter";
 
 const pageQueryParamSchema = z
     .string()
@@ -37,7 +38,7 @@ export class FetchAnswerCommensController {
         }
 
         return {
-            comments: result.value.answersComment.map(CommentsPresenter.toHttp)
+            comments: result.value.comments.map(CommentsWithAuthorPresenter.toHttp)
         }
     }
 }
