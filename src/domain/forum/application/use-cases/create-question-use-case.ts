@@ -45,8 +45,6 @@ export class CreateQuestionUseCase {
 
     question.attachments = new QuestionAttachmentList(questionAttachment);
 
-    console.log(question.attachments)
-    console.log('antes do meu respository')
     await this.questionRepository.create(question);
 
     return right({
