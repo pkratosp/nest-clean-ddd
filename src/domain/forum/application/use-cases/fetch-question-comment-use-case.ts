@@ -2,6 +2,7 @@ import { Either, right } from "@/core/either";
 import { QuestionCommentRepository } from "../repositories/question-comment-repository";
 import { QuestionComment } from "../../enterprise/entities/question-comment";
 import { Injectable } from "@nestjs/common";
+import { CommentWithAuthor } from "../../enterprise/entities/value-objects/comment-with-author";
 
 type FetchQuestionCommentUseCaseRequest = {
     questionId: string
@@ -10,7 +11,7 @@ type FetchQuestionCommentUseCaseRequest = {
 
 
 type FetchQuestionCommentUseCaseResponse = Either<null, {
-    comments: QuestionComment[]
+    comments: CommentWithAuthor[]
 }>
 
 @Injectable()
