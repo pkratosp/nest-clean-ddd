@@ -4,23 +4,23 @@ Projeto feito com nestjs usando DDD, este projeto é uma aplicação de forum, o
 
 ## Funcionalidades do projeto
 
-[X] - Deve ser possivel cadastrar uma pergunta
-[X] - Deve ser possivel cadastrar uma resposta
-[X] - Deve ser possivel escolher a melhor resposta de uma pergunta
-[X] - Deve ser possivel comentar em uma resposta
-[X] - Deve ser possivel comentar em uma pergunta
-[X] - Deve ser possivel deletar o comentario de uma pergunta
-[X] - Deve ser possivel deletar o comentario de uma resposta
-[X] - Deve ser possivel deletar uma resposta
-[X] - Deve ser possivel deletar uma pergunta
-[X] - Deve ser possivel editar uma pergunta
-[X] - Deve ser possivel editar uma resposta
-[X] - Deve ser possivel visualizar resposta de uma questão
-[X] - Deve ser possivel buscar perguntas recentes
-[X] - Deve ser possivel receber uma notificação de uma resposta
-[X] - Deve ser possivel ler uma notificação
-[X] - Deve ser possivel anexar arquivos na resposta
-[X] - Deve ser possivel anexar arquivos na pergunta
+- [x] Deve ser possivel cadastrar uma pergunta
+- [x] Deve ser possivel cadastrar uma resposta
+- [x] Deve ser possivel escolher a melhor resposta de uma pergunta
+- [x] Deve ser possivel comentar em uma resposta
+- [x] Deve ser possivel comentar em uma pergunta
+- [x] Deve ser possivel deletar o comentario de uma pergunta
+- [x] Deve ser possivel deletar o comentario de uma resposta
+- [x] Deve ser possivel deletar uma resposta
+- [x] Deve ser possivel deletar uma pergunta
+- [x] Deve ser possivel editar uma pergunta
+- [x] Deve ser possivel editar uma resposta
+- [x] Deve ser possivel visualizar resposta de uma questão
+- [x] Deve ser possivel buscar perguntas recentes
+- [x] Deve ser possivel receber uma notificação de uma resposta
+- [x] Deve ser possivel ler uma notificação
+- [x] Deve ser possivel anexar arquivos na resposta
+- [x] Deve ser possivel anexar arquivos na pergunta
 
 ## Iniciar a aplicação
 Para inciar a aplicação é necessário possuir o docker instalado, caso já possua o docker execute os comandos abaixo
