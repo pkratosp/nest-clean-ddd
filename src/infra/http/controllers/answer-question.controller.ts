@@ -14,6 +14,7 @@ import { UserPayload } from "@/infra/auth/jwt.strategy";
 
 const answerQuestionBodySchema = z.object({
   content: z.string(),
+  attachments: z.array(z.string().uuid())
 });
 
 const bodyValidationPipe = new ZodValidationPipe(answerQuestionBodySchema);
@@ -37,7 +38,7 @@ export class AnswerQuestionController {
       content: answer.content,
       instructorId: user.sub,
       questionId: questionId,
-      attachments: [],
+      attachments: answer.attachments,
     });
 
     if (result.isLeft()) {

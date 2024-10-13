@@ -21,7 +21,6 @@ export function makeAttachments(
 }
 
 @Injectable()
-
 export class AttachmentFactory {
     constructor(
         private readonly prismaService: PrismaService

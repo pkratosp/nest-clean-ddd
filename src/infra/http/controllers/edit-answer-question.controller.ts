@@ -13,6 +13,7 @@ import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
 
 const editAnswerQuestionBodySchema = z.object({
   content: z.string(),
+  attachments: z.array(z.string()).default([])
 });
 
 const bodyValidationPipe = new ZodValidationPipe(editAnswerQuestionBodySchema);
@@ -34,7 +35,7 @@ export class EditAnswerQuestionController {
     const result = await this.editAnswerUseCase.execute({
       content: body.content,
       answerId: id,
-      attachments: [],
+      attachments: body.attachments,
       authorId: user.sub,
     });
 
