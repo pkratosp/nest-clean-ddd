@@ -9,7 +9,11 @@ import { InMemoryNotificationRepository } from "test/repositories/in-memory-noti
 import { makeQuestion } from "test/factories/make-question";
 import { vi, MockInstance } from "vitest";
 import { waitFor } from "test/utils/wait-for";
+import { InMemoryStudantsRepository } from "test/repositories/in-memory-studants-repository";
+import { InMemoryAttachmentsRepository } from "test/repositories/in-memory-attachments-repository";
 
+let inMemoryStudantsRepository: InMemoryStudantsRepository
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let inMemoryQuestionsAttachmentsRepository: InMemoryQuestionsAttachmentsRepository;
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
@@ -21,10 +25,14 @@ let sendNotificationExecuteSpy: MockInstance;
 
 describe("on question best answer choosen", () => {
   beforeEach(() => {
+    inMemoryStudantsRepository = new InMemoryStudantsRepository()
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
     inMemoryQuestionsAttachmentsRepository =
       new InMemoryQuestionsAttachmentsRepository();
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionsAttachmentsRepository,
+      inMemoryStudantsRepository,
+      inMemoryAttachmentsRepository
     );
     inMemoryAnswersAttachmentsRepository =
       new InMemoryAnswersAttachmentsRepository();

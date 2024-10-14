@@ -3,7 +3,9 @@ import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-r
 import { CommentOnAnswerUseCase } from "./comment-on-answer-use-case";
 import { makeAnswer } from "test/factories/make-answer";
 import { InMemoryAnswersAttachmentsRepository } from "test/repositories/in-memory-answers-attachments-repository";
+import { InMemoryStudantsRepository } from "test/repositories/in-memory-studants-repository";
 
+let inMemoryStudantsRepository: InMemoryStudantsRepository
 let inMemoryAnswersAttachmentsRepository: InMemoryAnswersAttachmentsRepository;
 let inMemoryAnswersCommentRepository: InMemoryAnswersCommentRepository;
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
@@ -11,9 +13,10 @@ let sut: CommentOnAnswerUseCase;
 
 describe("Comment on answer use case", () => {
   beforeEach(() => {
+    inMemoryStudantsRepository = new InMemoryStudantsRepository()
     inMemoryAnswersAttachmentsRepository =
       new InMemoryAnswersAttachmentsRepository();
-    inMemoryAnswersCommentRepository = new InMemoryAnswersCommentRepository();
+    inMemoryAnswersCommentRepository = new InMemoryAnswersCommentRepository(inMemoryStudantsRepository);
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
       inMemoryAnswersAttachmentsRepository,
     );
