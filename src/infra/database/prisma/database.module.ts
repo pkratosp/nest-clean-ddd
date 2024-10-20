@@ -5,7 +5,7 @@ import { PrismaService } from "./prisma-service";
 import { PrismaAnswersAttachmentsRepository } from "./repositories/prisma-answers-attachments-repository";
 import { PrismaAnswersCommentRepository } from "./repositories/prisma-answers-comment-repository";
 import { PrismaAnswersRepository } from "./repositories/prisma-answers-repository";
-import { PrimaNotificationRepository } from "./repositories/prisma-notification-repository";
+import { PrismaNotificationRepository } from "./repositories/prisma-notification-repository";
 import { PrismaQuestionsAttachmentsRepository } from "./repositories/prisma-questions-attachments-repository";
 import { PrismaQuestionsCommentRepository } from "./repositories/prisma-questions-comment-repository";
 import { PrismaQuestionsRepository } from "./repositories/prisma-questions-repository";
@@ -39,10 +39,6 @@ import { PrismaAttachmentsRepository } from "./repositories/prisma-attachments-r
       useClass: PrismaAnswersRepository,
     },
     {
-      provide: NotificationRepository,
-      useClass: PrimaNotificationRepository,
-    },
-    {
       provide: QuestionAttachmentsRepository,
       useClass: PrismaQuestionsAttachmentsRepository,
     },
@@ -61,6 +57,10 @@ import { PrismaAttachmentsRepository } from "./repositories/prisma-attachments-r
     {
       provide: AttachmentsRepository,
       useClass: PrismaAttachmentsRepository
+    },
+    {
+      provide: NotificationRepository,
+      useClass: PrismaNotificationRepository
     }
   ],
   exports: [
