@@ -8,11 +8,13 @@ import { QuestionAttachmentsRepository } from "@/domain/forum/application/reposi
 import { QuestionDetails } from "@/domain/forum/enterprise/entities/value-objects/question-details";
 import { PrismaQuestionDetailsMapper } from "../mappers/prisma-question-details-mapper";
 import { DomainEvents } from "@/core/events/domain-events";
+import { CacheRepository } from "@/infra/cache/cacheRepository";
 
 @Injectable()
 export class PrismaQuestionsRepository implements QuestionRepository {
   constructor(
     private readonly prismaService: PrismaService,
+    private readonly cacheRepository: CacheRepository,
     private readonly questionAttachmentsRepository: QuestionAttachmentsRepository
   ) {}
 
@@ -45,6 +47,14 @@ export class PrismaQuestionsRepository implements QuestionRepository {
   }
 
   async findDetailsBySlug(slug: string): Promise<QuestionDetails | null> {
+    const cacheHit = await this.cacheRepository.get(`question:${slug}:details`)
+
+    if(cacheHit) {
+      const cacheData = JSON.parse(cacheHit)
+
+      return cacheData
+    }
+
     const question = await this.prismaService.question.findUnique({
       where: {
         slug,
@@ -59,7 +69,14 @@ export class PrismaQuestionsRepository implements QuestionRepository {
       return null;
     }
 
-    return PrismaQuestionDetailsMapper.toDomain(question)
+    const questionDetails = PrismaQuestionDetailsMapper.toDomain(question)
+
+    this.cacheRepository.set(
+      `question:${slug}:details`,
+      JSON.stringify(questionDetails)
+    )
+
+    return questionDetails
   }
 
   async create(question: Question): Promise<void> {
@@ -86,12 +103,13 @@ export class PrismaQuestionsRepository implements QuestionRepository {
         },
         data,
       }),
-      await this.questionAttachmentsRepository.createMany(
+      this.questionAttachmentsRepository.createMany(
         question.attachments.getNewItems()
       ),
-      await this.questionAttachmentsRepository.deleteMany(
+      this.questionAttachmentsRepository.deleteMany(
         question.attachments.getRemovedItems()
-      )
+      ),
+      this.cacheRepository.delete(`question:${question.slug}:details`)
     ]);
 
     DomainEvents.dispatchEventsForAggregate(question.id)
