@@ -22,8 +22,12 @@ import { QuestionAttachmentsRepository } from "@/domain/forum/application/reposi
 import { QuestionCommentRepository } from "@/domain/forum/application/repositories/question-comment-repository";
 import { AttachmentsRepository } from "@/domain/forum/application/repositories/attachments-repository";
 import { PrismaAttachmentsRepository } from "./repositories/prisma-attachments-repository";
+import { CacheModule } from "@/infra/cache/cache.module";
 
 @Module({
+  imports: [
+    CacheModule
+  ],
   providers: [
     PrismaService,
     {
