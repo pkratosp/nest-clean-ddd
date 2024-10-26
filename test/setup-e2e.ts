@@ -10,12 +10,13 @@ import { envSchema } from "@/infra/env/env";
 config({ path: '.env', override: true })
 config({ path: '.env.test', override: true })
 
-const env = envSchema.parse(process.env)
+const env = process.env
 
 const prisma = new PrismaClient();
+// @ts-ignore
 const redis = new Redis({
   db: env.REDIS_BD,
-  port: env.REDIS_PORT,
+  port: env.REDIS_PORT, 
   host: env.REDIS_HOST
 })
 
